@@ -2,16 +2,13 @@ import React, { useState } from "react";
 
 import { assets } from "../assets/assets";
 import { Link, NavLink } from "react-router-dom";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
   return (
     <div className="flex items-center justify-between py-5 font-bold">
-      <div className="logo">
-        <Link to="/" className="text-3xl font-medium">
-          NEFO<span className="text-accent-color">SHOP</span>
-        </Link>
-      </div>
+      <Logo />
       <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
         <NavLink to="/">
           <p>HOME</p>
