@@ -8,13 +8,26 @@ import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
   const { products } = useContext(ShopContext);
-
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
+  const [category, setCategory] = useState([]);
+
+  const toggleCategory = (e) => {
+    if (category.includes(e.target.value)) {
+      setCategory((prev) => prev.filter((item) => item != e.target.value));
+    } else {
+      setCategory((prev) => [...prev, e.target.value]);
+    }
+  };
 
   useEffect(() => {
     setFilterProducts(products);
   }, []);
+
+  useEffect(() => {
+    console.log(category);
+  }, [category]);
+
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
       {/* Filter Options */}
@@ -45,6 +58,7 @@ const Collection = () => {
                 name="category"
                 id="category"
                 value={"Men"}
+                onChange={toggleCategory}
               />
               Men
             </p>
@@ -56,6 +70,7 @@ const Collection = () => {
                 name="category"
                 id="category"
                 value={"Women"}
+                onChange={toggleCategory}
               />
               Women
             </p>
@@ -67,6 +82,7 @@ const Collection = () => {
                 name="category"
                 id="category"
                 value={"Kids"}
+                onChange={toggleCategory}
               />
               Kids
             </p>
@@ -125,15 +141,9 @@ const Collection = () => {
             name=""
             id=""
           >
-            <option className="bg-accent-color" value="relavent">
-              Sort by: Relavent
-            </option>
-            <option className="bg-accent-color" value="low-high">
-              Sort by: Low to High
-            </option>
-            <option className="bg-accent-color" value="high-low">
-              Sort by: High to Low
-            </option>
+            <option value="relavent">Sort by: Relavent</option>
+            <option value="low-high">Sort by: Low to High</option>
+            <option value="high-low">Sort by: High to Low</option>
           </select>
         </div>
         {/* Map Products */}
