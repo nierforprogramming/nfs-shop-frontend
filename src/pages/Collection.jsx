@@ -11,6 +11,8 @@ const Collection = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+  const [sortType, setSortType] = useState("relavent");
 
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
@@ -20,13 +22,57 @@ const Collection = () => {
     }
   };
 
-  useEffect(() => {
-    setFilterProducts(products);
-  }, []);
+  const toggleSubCategory = (e) => {
+    if (subCategory.includes(e.target.value)) {
+      setSubCategory((prev) => prev.filter((item) => item != e.target.value));
+    } else {
+      setSubCategory((prev) => [...prev, e.target.value]);
+    }
+  };
+
+  const applyFilter = () => {
+    let productsCopy = products.slice();
+
+    if (category.length > 0) {
+      productsCopy = productsCopy.filter((item) =>
+        category.includes(item.category)
+      );
+    }
+
+    if (subCategory.length > 0) {
+      productsCopy = productsCopy.filter((item) =>
+        subCategory.includes(item.subCategory)
+      );
+    }
+
+    setFilterProducts(productsCopy);
+  };
+
+  const sortProduct = () => {
+    const fpCopy = filterProducts.slice();
+
+    switch (sortType) {
+      case "low-high":
+        setFilterProducts(fpCopy.sort((a, b) => a.price - b.price));
+        break;
+
+      case "high-low":
+        setFilterProducts(fpCopy.sort((a, b) => b.price - a.price));
+        break;
+
+      default:
+        applyFilter();
+        break;
+    }
+  };
 
   useEffect(() => {
-    console.log(category);
-  }, [category]);
+    applyFilter();
+  }, [category, subCategory]);
+
+  useEffect(() => {
+    sortProduct();
+  }, [sortType]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
@@ -103,6 +149,7 @@ const Collection = () => {
                 name="category"
                 id="category"
                 value={"Topwear"}
+                onChange={toggleSubCategory}
               />
               Topwear
             </p>
@@ -114,6 +161,7 @@ const Collection = () => {
                 name="category"
                 id="category"
                 value={"Bottomwear"}
+                onChange={toggleSubCategory}
               />
               Bottomwear
             </p>
@@ -125,6 +173,7 @@ const Collection = () => {
                 name="category"
                 id="category"
                 value={"Winterwear"}
+                onChange={toggleSubCategory}
               />
               Winterwear
             </p>
@@ -137,6 +186,7 @@ const Collection = () => {
           <Title text1={"ALL"} text2={"COLLECTIONS"} />
           {/* Product Sort */}
           <select
+            onChange={(e) => setSortType(e.target.value)}
             className="border-2 border-grey-300 text-sm px-2"
             name=""
             id=""
