@@ -5,6 +5,7 @@ import Title from "../components/Title";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
 import ProductItem from "../components/ProductItem";
+import { Link, useParams } from "react-router-dom";
 
 const Collection = () => {
   const { products, search, showSearch } = useContext(ShopContext);
@@ -13,7 +14,6 @@ const Collection = () => {
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState("relavent");
-
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
       setCategory((prev) => prev.filter((item) => item != e.target.value));
